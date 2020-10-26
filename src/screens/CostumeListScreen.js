@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listCostumes } from "../actions/costumeActions";
 
 
-function HomeScreen (props) {
+function CostumeListScreen (props) {
 
     const costumesList = useSelector(state => state.costumesList);
     const { costumes, loading, error } = costumesList;
@@ -18,10 +18,12 @@ function HomeScreen (props) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(costumes);
 
     return( loading ? <div>Loading...</div> : error ? <div>{error}</div> : costumes ?
     <div>
+        <div className="costumes-list-title">
+            <h4>Costumes Directory</h4>
+        </div>
         <ul className="costumes">
             {
                 costumes.map(costume => (
@@ -47,4 +49,4 @@ function HomeScreen (props) {
     );
 }
 
-export default HomeScreen;
+export default CostumeListScreen;

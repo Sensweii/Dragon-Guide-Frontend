@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 
-import HomeScreen from './screens/HomeScreen'
+import CostumeListScreen from './screens/CostumeListScreen'
 import CostumeScreen from './screens/CostumeScreen'
 
 import './App.css';
@@ -69,7 +69,7 @@ function App() {
             <Route path="/shipping" component={ShippingScreen}></Route>
             <Route path="/payment" component={PaymentScreen}></Route>
             <Route path="/placeorder" component={PlaceOrderScreen}></Route>
-            <Route path="/" exact={true} component={HomeScreen}></Route>
+            <Route path="/" exact={true} component={CostumeListScreen}></Route>
           </div>
         </main>
         <footer className="footer">

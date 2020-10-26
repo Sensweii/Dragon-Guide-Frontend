@@ -103,7 +103,12 @@ a:hover{
   color: #ff8000;
 }
 
-/* Home Screen */
+/* Costume List Screen */
+
+.costumes-list-title > h4{
+  padding-left: 3rem;
+  font-size: 2rem;
+}
 
 .costumes{
   display: flex;
