@@ -18,11 +18,12 @@ const {
 
 
 const baseURL = 'https://sea-dragon-backend.herokuapp.com/api';
-const listCostumes = () => async (dispatch) => {
+const listCostumes = (sortOrder='') => async (dispatch) => {
     try {
         dispatch({type: COSTUME_LIST_REQUEST});
-        const {data} = await axios.get(baseURL + '/costumes/list');
-        console.log(data)
+        const {data} = await axios.get(baseURL + '/costumes/list' + 
+            '?sortOrder=' + sortOrder
+        );
         dispatch({type: COSTUME_LIST_SUCCESS, payload: data});
     }
     catch (error) {

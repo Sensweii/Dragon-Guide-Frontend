@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,6 +10,13 @@ function CostumeListScreen (props) {
     const costumesList = useSelector(state => state.costumesList);
     const { costumes, loading, error } = costumesList;
     const dispatch = useDispatch();
+
+    const [sortOrder, setSortOrder] = useState('');
+    const sortHandler = (e) => {
+        setSortOrder(e.target.value);
+        console.log(sortOrder)
+        dispatch(listCostumes(e.target.value));
+    }
 
     useEffect(() => {
         dispatch(listCostumes());
@@ -23,6 +30,23 @@ function CostumeListScreen (props) {
     <div>
         <div className="costumes-list-title">
             <h4>Costumes Directory</h4>
+            <div className="costumes-list-search">
+
+            </div>
+            <div className="costumes-list-filter">
+
+            </div>
+            <div className="costumes-list-sort">
+                Sort By:{' '}
+                <select value={sortOrder} onChange={sortHandler}>
+                    <option value=''>None</option>
+                    <option value='alphabetical'>Alphabetical</option>
+                    <option value='high_to_low_price'>Highest Price First</option>
+                    <option value='low_to_high_price'>Lowest Price First</option>
+                    <option value='rating'>Highest Rated First</option>
+                    <option value='likes'>Most Liked</option>
+                </select>
+            </div>
         </div>
         <ul className="costumes">
             {

@@ -105,9 +105,27 @@ a:hover{
 
 /* Costume List Screen */
 
+.costumes-list-title{
+  display: grid;
+  grid-template-areas: 
+  "costumes-list-title-area" 
+  "costumes-list-search-area"
+  "costumes-list-filter-area"
+  "costumes-list-sort-area";
+  grid-template-columns: 1fr 23rem 23rem 23rem;
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
 .costumes-list-title > h4{
   padding-left: 3rem;
   font-size: 2rem;
+}
+
+.costumes-list-sort{
+  grid-area: "costumes-list-sort-area";
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .costumes{
