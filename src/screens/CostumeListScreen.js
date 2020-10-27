@@ -25,6 +25,22 @@ function CostumeListScreen (props) {
         dispatch(listCostumes(filterParam, selectedSortOrder));
     }
 
+    // Page number of last entry
+    const lastEntryIndex = costumes.length - 1;
+    const lastEntryCostume = costumes[lastEntryIndex];
+    const pageCount = lastEntryCostume ? lastEntryCostume.page : 0;
+
+    const [page, setPage] = useState(1);
+    const pageHandler = (value) => {
+        var selectedPage = value;
+        setPage(selectedPage);
+    }
+
+    // Set costumes to be rendered on given page
+    const renderedCostumes = costumes.filter((costume) =>{
+        return costume.page === page;
+    });
+
     useEffect(() => {
         dispatch(listCostumes());
         return () => {
@@ -32,6 +48,20 @@ function CostumeListScreen (props) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Build Paginator Buttons
+    let paginationElements = []
+    for( var i = 1; i < pageCount+1; i++){        
+        (function(index) {
+            let page_button =<button
+                className={index === page ? 'active' : ''} 
+                value={index}
+                key={'page_button_'+index}
+                onClick={() => pageHandler(index)}
+            >{index}</button>
+            paginationElements.push(page_button)
+        })(i);        
+    };
 
     return( loading ? <div>Loading...</div> : error ? <div>{error}</div> : costumes ?
     <div>
@@ -62,7 +92,7 @@ function CostumeListScreen (props) {
         </div>
         <ul className="costumes">
             {
-                costumes.map(costume => (
+                renderedCostumes.map(costume => (
                 <li key={costume._id}>
                     <div className="costume">
                         <div className="costume-image-border">
@@ -80,6 +110,13 @@ function CostumeListScreen (props) {
                 </li>))
             }
         </ul>
+        <div className="pagination-container">
+            <div className="pagination">
+                <button href="#">&laquo;</button>
+                {paginationElements}
+                <button href="#">&raquo;</button>
+            </div>
+        </div>
     </div>
     : <div>Empty...</div>
     );
