@@ -112,7 +112,7 @@ a:hover{
   "costumes-list-search-area"
   "costumes-list-filter-area"
   "costumes-list-sort-area";
-  grid-template-columns: 1fr 23rem 23rem 23rem;
+  grid-template-columns: 1fr 23rem 19rem 23rem;
   grid-template-rows: 1fr;
   align-items: center;
 }
@@ -120,6 +120,12 @@ a:hover{
 .costumes-list-title > h4{
   padding-left: 3rem;
   font-size: 2rem;
+}
+
+.costumes-list-filter{
+  grid-area: "costumes-list-filter-area";
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .costumes-list-sort{

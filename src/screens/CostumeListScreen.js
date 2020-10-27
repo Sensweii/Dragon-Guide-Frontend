@@ -11,11 +11,18 @@ function CostumeListScreen (props) {
     const { costumes, loading, error } = costumesList;
     const dispatch = useDispatch();
 
+    const [filterParam, setFilterParam] = useState('');
+    const filterHandler = (e) => {
+        var selectedFilterParam = e.target.value;
+        setFilterParam(e.target.value);
+        dispatch(listCostumes(selectedFilterParam, sortOrder));
+    }
+
     const [sortOrder, setSortOrder] = useState('');
     const sortHandler = (e) => {
-        setSortOrder(e.target.value);
-        console.log(sortOrder)
-        dispatch(listCostumes(e.target.value));
+        var selectedSortOrder = e.target.value;
+        setSortOrder(selectedSortOrder);
+        dispatch(listCostumes(filterParam, selectedSortOrder));
     }
 
     useEffect(() => {
@@ -34,7 +41,12 @@ function CostumeListScreen (props) {
 
             </div>
             <div className="costumes-list-filter">
-
+                Filter By:{' '}
+                <select value={filterParam} onChange={filterHandler}>
+                    <option value=''>None</option>
+                    <option value='available'>Available</option>
+                    <option value='unavailable'>Unavailable</option>
+                </select>
             </div>
             <div className="costumes-list-sort">
                 Sort By:{' '}
