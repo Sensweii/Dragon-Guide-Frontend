@@ -54,6 +54,7 @@ function CostumeListScreen (props) {
     const filterHandler = (e) => {
         var selectedFilterParam = e.target.value;
         setFilterParam(e.target.value);
+        setPage(1);
         dispatch(listCostumes(selectedFilterParam, sortOrder));
     }
 
