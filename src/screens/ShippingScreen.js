@@ -14,14 +14,32 @@ function ShippingScreen (props) {
     const [city, setCity] = useState(shippingDetails ? shippingDetails.city : '');
     const [postalCode, setPostalCode] = useState(shippingDetails ? shippingDetails.postalCode : '');
     const [country, setCountry] = useState(shippingDetails? shippingDetails.country : '');
-    
+    const [shippingFormError, setShippingFormError] = useState('');
+
     const dispatch = useDispatch();
+
+    // Validate input
+    function validateShippingForm(postalCode){
+        const postalCodeError = (
+            /^\d+$/.test(postalCode)
+            ? null
+            : 'Invalid post code number.'
+        );
+        setShippingFormError(postalCodeError);
+        return postalCodeError
+    };
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        dispatch(saveShipping({address, city, postalCode, country}));
-        props.history.push('/payment');
-    }
+        const shippingFormError = validateShippingForm(postalCode);
+        if(!shippingFormError){
+            dispatch(saveShipping({address, city, postalCode, country}));
+            props.history.push('/payment');
+        } else {
+            // Re-render to show page error
+            props.history.push('/shipping')
+        }
+    };
 
     return(<div>
     <CheckoutSteps step1 step2></CheckoutSteps>
@@ -31,6 +49,10 @@ function ShippingScreen (props) {
                 <li>
                     <h2>Shipping</h2>
                 </li>
+                {
+                    shippingFormError ? <li className='form-error-message'
+                        >{shippingFormError}</li> : null
+                }
                 <li>
                     <label htmlFor='address'>Address</label>
                     <input type='text'

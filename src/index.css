@@ -404,6 +404,10 @@ input{
   border-radius: 0.5rem;
 }
 
+.form-error-message{
+  color: #c04000;
+}
+
 /* Costumes Detail Editor */
 
 .costume-header{
