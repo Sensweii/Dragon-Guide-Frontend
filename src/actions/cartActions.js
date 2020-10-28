@@ -35,8 +35,11 @@ const removeFromCart = (costumeID) => async (dispatch, getState) => {
     }
 };
 
-const saveShipping = (data) => (dispatch) =>{
+const saveShipping = (data) => async (dispatch, getState) =>{
     dispatch({type: CART_SAVE_SHIPPING, payload: data});
+    const currentState = getState();
+    const shippingDetails = currentState.cart.shipping;
+    Cookie.set('shippingDetails', JSON.stringify(shippingDetails));
 };
 
 const savePayment = (data) => (dispatch) =>{
