@@ -6,18 +6,42 @@ import { listCostumes } from "../actions/costumeActions";
 
 
 function CostumeListScreen (props) {
-
+    // Initialize
     const costumesList = useSelector(state => state.costumesList);
     const { costumes, loading, error } = costumesList;
     const dispatch = useDispatch();
 
-    const [filterParam, setFilterParam] = useState('');
-    const filterHandler = (e) => {
-        var selectedFilterParam = e.target.value;
-        setFilterParam(e.target.value);
-        dispatch(listCostumes(selectedFilterParam, sortOrder));
+    // Paginate Results
+    const lastEntryIndex = costumes.length - 1;
+    const lastEntryCostume = costumes[lastEntryIndex];
+    const pageCount = lastEntryCostume ? lastEntryCostume.page : 0;
+    const [page, setPage] = useState(1);
+    const pageHandler = (value) => {
+        var selectedPage = value;
+        setPage(selectedPage);
+    }
+    const goPreviousPage = () => {
+        page === 1 ? setPage(1) : setPage(page - 1);
+    }
+    const goNextPage = () => {
+        page === pageCount ? setPage(pageCount) : setPage(page + 1)
     }
 
+    // Build Paginator Buttons
+    let paginationElements = []
+    for( var i = 1; i < pageCount+1; i++){        
+        (function(index) {
+            let page_button =<button
+                className={index === page ? 'page-button active' : 'page-button'} 
+                value={index}
+                key={'page_button_'+index}
+                onClick={() => pageHandler(index)}
+            >{index}</button>
+            paginationElements.push(page_button)
+        })(i);        
+    };
+
+    // Sort Results
     const [sortOrder, setSortOrder] = useState('');
     const sortHandler = (e) => {
         var selectedSortOrder = e.target.value;
@@ -25,21 +49,13 @@ function CostumeListScreen (props) {
         dispatch(listCostumes(filterParam, selectedSortOrder));
     }
 
-    // Page number of last entry
-    const lastEntryIndex = costumes.length - 1;
-    const lastEntryCostume = costumes[lastEntryIndex];
-    const pageCount = lastEntryCostume ? lastEntryCostume.page : 0;
-
-    const [page, setPage] = useState(1);
-    const pageHandler = (value) => {
-        var selectedPage = value;
-        setPage(selectedPage);
+    // Filter Results
+    const [filterParam, setFilterParam] = useState('');
+    const filterHandler = (e) => {
+        var selectedFilterParam = e.target.value;
+        setFilterParam(e.target.value);
+        dispatch(listCostumes(selectedFilterParam, sortOrder));
     }
-
-    // Set costumes to be rendered on given page
-    const renderedCostumes = costumes.filter((costume) =>{
-        return costume.page === page;
-    });
 
     useEffect(() => {
         dispatch(listCostumes());
@@ -49,19 +65,10 @@ function CostumeListScreen (props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Build Paginator Buttons
-    let paginationElements = []
-    for( var i = 1; i < pageCount+1; i++){        
-        (function(index) {
-            let page_button =<button
-                className={index === page ? 'active' : ''} 
-                value={index}
-                key={'page_button_'+index}
-                onClick={() => pageHandler(index)}
-            >{index}</button>
-            paginationElements.push(page_button)
-        })(i);        
-    };
+    // Render Results
+    const renderedCostumes = costumes.filter((costume) =>{
+        return costume.page === page;
+    });
 
     return( loading ? <div>Loading...</div> : error ? <div>{error}</div> : costumes ?
     <div>
@@ -112,9 +119,9 @@ function CostumeListScreen (props) {
         </ul>
         <div className="pagination-container">
             <div className="pagination">
-                <button href="#">&laquo;</button>
+                <button className="page-button-handle" onClick={goPreviousPage}>&laquo;</button>
                 {paginationElements}
-                <button href="#">&raquo;</button>
+                <button className="page-button-handle" onClick={goNextPage}>&raquo;</button>
             </div>
         </div>
     </div>

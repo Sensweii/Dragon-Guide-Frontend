@@ -239,12 +239,13 @@ a:hover{
   text-decoration: none;
   transition: background-color .3s;
   border: none;
+  outline: none;
   background-color: #ffffff;
   margin: 0.1rem;
 }
 
 /* Style the active/current link */
-.pagination button.active {
+.pagination button.page-button.active {
   background-color: dodgerblue;
   color: white;
 }
