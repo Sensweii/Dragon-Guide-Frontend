@@ -27,25 +27,35 @@ function CostumeScreen (props) {
         <div className="back-to-results">
             <Link to="/">Back to results</Link>
         </div>
-        { loading ? <div>Loading...</div> : error ? <div>{error}</div> :
-            (
-                <div className="costume-details">
-                    <div className="costume-details-image">
-                        <img src={costume.image} alt="costume"></img>
-                    </div>
-                    <div className="costume-details-info">
+        <div className="costume-details">
+            <div className="costume-details-image">
+                { 
+                    loading ? <img
+                        src="https://res.cloudinary.com/doakep7he/image/upload/v1603948838/loading.gif"
+                        alt="costume"
+                    ></img> 
+                    : <img src={costume.image} alt="costume"></img>
+                }
+            </div>
+            <div className="costume-details-info">
+                {
+                    loading ? <img
+                        src="https://res.cloudinary.com/doakep7he/image/upload/v1603948838/loading.gif"
+                        alt="costume"
+                    ></img> 
+                    : <div>
                         <ul>
-                            <li>
+                            <li key={'name_' + costume._id}>
                                 <h4>{costume.name}</h4>
                             </li>
-                            <li>
+                            <li key={'rating_' + costume._id}>
                                 {costume.rating} Stars ({costume.numLikes} Likes)
                             </li>
-                            <li>
+                            <li key={'price_' + costume._id}>
                                 Price: <b>EYET {costume.price}</b>
                             </li>
-                            <li>
-                                Description:
+                            <li key={'description_' + costume._id}>
+                                <h4>Description:</h4>
                                 <div>
                                     {costume.description}
                                 </div>
@@ -53,45 +63,45 @@ function CostumeScreen (props) {
                         </ul>
                         <ul className="costume-stats">
                             <div>
-                            <li>
-                                <h4>Stats</h4>
-                            </li>
-                            {/* {
-                                costume.stats.map(stat =>
-                                    <li>
-
-                                    </li>
-                                )
-                            } */}
+                                <li key={'stats_' + costume._id}>
+                                    <h4>Stats</h4>
+                                </li>
+                                Coming Soon...
                             </div>
                         </ul>
                     </div>
-                    <div className="costume-details-action">
-                        <ul>
-                            <li>
-                                Price: {costume.price}
-                            </li>
-                            <li>
-                                Status: {costume.countInStock > 0 ? 'In Stock' : 'Unavailable'}
-                            </li>
-                            <li>
-                                Qty: <select value={qty} onChange={(e) => {setQty(e.target.value)}}>
-                                    {[...Array(costume.countInStock).keys()].map(x =>
-                                        <option key={x+1} value={x+1}>{x+1}</option>
-                                    )}
-                                </select>
-                            </li>
-                            <li>
-                                {
-                                    costume.countInStock > 0 && 
-                                    <button onClick={handleAddToCart} className="button primary">Add to Cart</button>
-                                }
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            )
-        }
+                }
+            </div>
+            <div className="costume-details-action">
+                { 
+                    loading ? <img
+                        src="https://res.cloudinary.com/doakep7he/image/upload/v1603948838/loading.gif"
+                        alt="costume"
+                    ></img> 
+                    : <ul>
+                        <li>
+                            Price: {costume.price}
+                        </li>
+                        <li>
+                            Status: {costume.countInStock > 0 ? 'In Stock' : 'Unavailable'}
+                        </li>
+                        <li>
+                            Qty: <select value={qty} onChange={(e) => {setQty(e.target.value)}}>
+                                {[...Array(costume.countInStock).keys()].map(x =>
+                                    <option key={x+1} value={x+1}>{x+1}</option>
+                                )}
+                            </select>
+                        </li>
+                        <li>
+                            {
+                                costume.countInStock > 0 && 
+                                <button onClick={handleAddToCart} className="button primary">Add to Cart</button>
+                            }
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
     </div>
     );
 }

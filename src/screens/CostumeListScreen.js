@@ -71,8 +71,40 @@ function CostumeListScreen (props) {
         return costume.page === page;
     });
 
-    return( loading ? <div>Loading...</div> : error ? <div>{error}</div> : costumes ?
-    <div>
+    // Build costume list frontend
+    const costumeListElements = (renderedCostumesList) =>{
+        return renderedCostumesList.map(costume => (
+            <li key={costume._id}>
+                <div className="costume">
+                    <div className="costume-image-border">
+                        <Link to={'/costume/' + costume._id}>
+                        <img className="costume-image" src={costume.image} alt="costume" />
+                        </Link>
+                    </div>
+                    <div className="costume-name">
+                        <Link to={'/costume/' + costume._id}>{costume.name}</Link>
+                    </div>
+                    <div className="costume-designer">Designer: {costume.designer}</div>
+                    <div className="costume-price">EYET {costume.price}</div>
+                    <div className="costume-rating">{costume.rating} Stars ({costume.numLikes} Likes)</div>
+                </div>
+            </li>))
+    };
+
+    // Build loading screen
+    const loadingSpinners = []
+    for(var i=1; i<5; i++) {
+        let loadingElement = <li key={'loading_'+i}>
+            <div className="costume">
+                <div className="costume-image-border">
+                    <img className="costume-image" src="https://res.cloudinary.com/doakep7he/image/upload/v1603948838/loading.gif" alt="loading" />
+                </div>
+            </div>
+        </li>;
+        loadingSpinners.push(loadingElement);
+    };
+
+    return(<div>
         <div className="costumes-list-title">
             <h4>Costumes Directory</h4>
             <div className="costumes-list-search">
@@ -99,23 +131,11 @@ function CostumeListScreen (props) {
             </div>
         </div>
         <ul className="costumes">
-            {
-                renderedCostumes.map(costume => (
-                <li key={costume._id}>
-                    <div className="costume">
-                        <div className="costume-image-border">
-                            <Link to={'/costume/' + costume._id}>
-                            <img className="costume-image" src={costume.image} alt="costume" />
-                            </Link>
-                        </div>
-                        <div className="costume-name">
-                            <Link to={'/costume/' + costume._id}>{costume.name}</Link>
-                        </div>
-                        <div className="costume-designer">Designer: {costume.designer}</div>
-                        <div className="costume-price">EYET {costume.price}</div>
-                        <div className="costume-rating">{costume.rating} Stars ({costume.numLikes} Likes)</div>
-                    </div>
-                </li>))
+            { 
+                loading ? loadingSpinners
+                : error ? <div>{error}</div> 
+                : renderedCostumes ? costumeListElements(renderedCostumes)
+                : <div>Empty...</div>
             }
         </ul>
         <div className="pagination-container">
@@ -126,7 +146,6 @@ function CostumeListScreen (props) {
             </div>
         </div>
     </div>
-    : <div>Empty...</div>
     );
 }
 
