@@ -41,12 +41,22 @@ function CostumeListScreen (props) {
         })(i);        
     };
 
+    // Keyword Search
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const searchHandler = (e) =>{
+        e.preventDefault();
+        setFilterParam('');
+        setSortOrder('');
+        dispatch(listCostumes(searchKeyword));
+        setSearchKeyword('');
+    }
+
     // Sort Results
     const [sortOrder, setSortOrder] = useState('');
     const sortHandler = (e) => {
         var selectedSortOrder = e.target.value;
         setSortOrder(selectedSortOrder);
-        dispatch(listCostumes(filterParam, selectedSortOrder));
+        dispatch(listCostumes(searchKeyword, filterParam, selectedSortOrder));
     }
 
     // Filter Results
@@ -55,7 +65,7 @@ function CostumeListScreen (props) {
         var selectedFilterParam = e.target.value;
         setFilterParam(e.target.value);
         setPage(1);
-        dispatch(listCostumes(selectedFilterParam, sortOrder));
+        dispatch(listCostumes(searchKeyword, selectedFilterParam, sortOrder));        
     }
 
     useEffect(() => {
@@ -108,7 +118,13 @@ function CostumeListScreen (props) {
         <div className="costumes-list-title">
             <h4>Costumes Directory</h4>
             <div className="costumes-list-search">
-
+                <form onSubmit={searchHandler}>
+                    <input type="text"
+                        placeholder="Search by Name"
+                        value={searchKeyword}
+                        onChange={(e) =>setSearchKeyword(e.target.value)}></input>
+                    <button type="submit">Go</button>
+                </form>
             </div>
             <div className="costumes-list-filter">
                 Filter By:{' '}
@@ -134,15 +150,19 @@ function CostumeListScreen (props) {
             { 
                 loading ? loadingSpinners
                 : error ? <div>{error}</div> 
-                : renderedCostumes ? costumeListElements(renderedCostumes)
-                : <div>Empty...</div>
+                : renderedCostumes.length ? costumeListElements(renderedCostumes)
+                : <div className="costumes-no-result">No results found...</div>
             }
         </ul>
         <div className="pagination-container">
             <div className="pagination">
-                <button className="page-button-handle" onClick={goPreviousPage}>&laquo;</button>
-                {paginationElements}
-                <button className="page-button-handle" onClick={goNextPage}>&raquo;</button>
+                {
+                    costumes.length ? <div>
+                        <button className="page-button-handle" onClick={goPreviousPage}>&laquo;</button>
+                            {paginationElements}
+                        <button className="page-button-handle" onClick={goNextPage}>&raquo;</button>
+                    </div> : null
+                }
             </div>
         </div>
     </div>
