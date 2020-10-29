@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+import GoogleLogin from 'react-google-login';
 
 import CostumeListScreen from './screens/CostumeListScreen'
 import CostumeScreen from './screens/CostumeScreen'
@@ -15,6 +16,10 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
 function App() {
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
 
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
@@ -42,6 +47,13 @@ function App() {
                   userInfo ? <Link to='/profile'>{ userInfo.name }</Link> :
                   <Link to="/signin">Sign In</Link>
                 }
+                <GoogleLogin
+                  clientId="583174611306-upmbg6doiaqvhpjae84n3igrlthq2oml.apps.googleusercontent.com"
+                  buttonText="Login"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={'single_host_origin'}
+                />
             </div>
         </header>
         <aside className="sidebar">

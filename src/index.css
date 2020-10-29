@@ -55,6 +55,14 @@ button{
   font-weight: bold;
   text-decoration: none;
 }
+.header-links{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-links div{
+  padding: 1rem;
+}
 .header-links a{
   color: #ffffff;
   text-decoration: none;
